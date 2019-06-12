@@ -69,27 +69,28 @@ $("body").on("click", "buttons.emotion", function(){
             var giphyImage = $("<img>");
             
             giphyImage.attr("src",results[i].images.fixed_height_still.url);
+            giphyImage.addClass("image");
+            giphyImage.attr("data-state");
             gifDiv.append(p);
             gifDiv.append(giphyImage);
             
             
-            // if(state === "still"){
-                //     giphyImage.attr("src", animate);
-                //     state.attr("animate");
-                //     gifDiv.append(p);
-                //     gifDiv.append(giphyImage);
-                // }else{
-                    //     giphyImage.attr("src", still);
-                    //     state.attr("still");
-                    //     gifDiv.append(p);
-                    //     gifDiv.append(giphyImage);
-                    // }
-                    
-                    $("#display").prepend(gifDiv);
-                };
-                console.log(renderButtons());
-                
-            };
-        });
+            $("#display").prepend(gifDiv);
+        };
+        console.log(renderButtons());
+        
+    };
 });
-renderButtons();
+});
+
+$(".image").on("click", function(){
+    var state = $(this).attr("data-state");
+    if (state === "still") {
+        $(this).animate();
+        $(this).attr("data-state", "animate");
+      } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+      }
+        });
+            renderButtons();
