@@ -20,3 +20,32 @@
 
 // - - -
 
+$("button").on("click", function (){
+    var emotion = $(this).attr("data-emotion");
+
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + emotion + "&api_key=TEjv4DhokKiGmbR0CqNmeMPDL5lC9h6u";
+    console.log(queryURL);
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function(response){
+        var results = response.data;
+
+        for (var i = 0; i < results.length; i++){
+            if(results[i].rating !== "r" && results[i].rating !== "pg-13"){
+                var gifDiv = $("div");
+                var rated = results[i].rating;
+                var p = $("<p>").text("Rated: " + rated);
+                var giphyImage = $("<img>");
+
+                giphyImage.attr("src", results[i].images.fixed_height.url);
+
+                gifDiv.append(p);
+                gifDiv.append(giphyImage);
+
+                $("#display").prepend(gifDiv);
+            }
+        }
+    })
+})
