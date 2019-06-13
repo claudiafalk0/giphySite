@@ -19,23 +19,23 @@
 // 8. **Rejoice**! You just made something really cool.
 
 // - - -
-var topics = [ "happy", "sad", "angry", "surprised"];
+var topics = ["happy", "sad", "angry", "surprised"];
 
-function renderButtons(){
-    
+function renderButtons() {
+
     $("#buttons").empty();
-    for(var i = 0; i < topics.length; i++){
+    for (var i = 0; i < topics.length; i++) {
         var a = $("<buttons>");
         a.addClass("emotion");
         a.data("emotion", topics[i]);
         a.text(topics[i]);
-        
+
         $("#buttons").append(a);
     }
 }
 
-$("#emotion-input").keypress(function(event){
-    if(event.which == 13) {
+$("#emotion-input").keypress(function (event) {
+    if (event.which == 13) {
         event.preventDefault();
         var searchBar = $("#emotion-input").val().trim();
         topics.push(searchBar);
@@ -45,52 +45,57 @@ $("#emotion-input").keypress(function(event){
 });
 
 
-$("body").on("click", "buttons.emotion", function(){
-    
+$("body").on("click", "buttons.emotion", function () {
+
     var emotion = $(this).data('emotion');
-    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + emotion + "&api_key=TEjv4DhokKiGmbR0CqNmeMPDL5lC9h6u";
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + emotion + "&api_key=TEjv4DhokKiGmbR0CqNmeMPDL5lC9h6u&limit=10";
     console.log(queryURL);
-    
+
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function(response){
+    }).then(function (response) {
         var results = response.data;
         // var still = results[i].images.fixed_height_still.url;
         // var animate = results[i].images.fixed_height.url;
         // var state = $(this).attr("data-state");
-        $(document).on("click", ".emotion", response.data-name);
+        $(document).on("click", ".emotion", response.data - name);
         
-    for (var i = 0; i < results.length; i++){
-        if(results[i].rating !== "r" && results[i].rating !== "pg-13"){
-            var gifDiv = $("div");
-            var rated = results[i].rating;
-            var p = $("<p>").text("Rated: " + rated);
-            var giphyImage = $("<img>");
-            
-            giphyImage.attr("src",results[i].images.fixed_height_still.url);
-            giphyImage.addClass("image");
-            giphyImage.attr("data-state");
-            gifDiv.append(p);
-            gifDiv.append(giphyImage);
-            
-            
-            $("#display").prepend(gifDiv);
+        $(".image").remove();
+        $(".rating").remove();
+        for (var i = 0; i < results.length; i++) {
+            if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+                var gifDiv = $("<div>");
+                var rated = results[i].rating;
+                var p = $("<p>").text("Rated: " + rated);
+                var giphyImage = $("<img>");
+
+                p.addClass("rating");
+                giphyImage.attr("src", results[i].images.fixed_height_still.url);
+                giphyImage.attr("data-animate", results[i].images.fixed_height.url);
+                giphyImage.attr("data-still", results[i].images.fixed_height_still.url);
+                giphyImage.attr("data-state", "still");
+                giphyImage.addClass("image");
+                gifDiv.append(p);
+                gifDiv.append(giphyImage);
+
+                $("#display").prepend(gifDiv);
+            }
+            console.log(renderButtons());
+
         };
-        console.log(renderButtons());
-        
-    };
-});
+    });
 });
 
-$(".image").on("click", function(){
+$("body").on("click", "img.image", function () {
     var state = $(this).attr("data-state");
     if (state === "still") {
-        $(this).animate();
+        $(this).attr("src", $(this).attr("data-animate"));
         $(this).attr("data-state", "animate");
-      } else {
+    } else {
         $(this).attr("src", $(this).attr("data-still"));
         $(this).attr("data-state", "still");
-      }
-        });
-            renderButtons();
+    }
+});
+
+renderButtons();
