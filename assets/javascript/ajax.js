@@ -41,7 +41,7 @@ $("#emotion-input").keypress(function (event) {
         topics.push(searchBar);
         
         renderButtons();
-        searchBar = $("#emotion-input").val("");
+        $("#emotion-input").val("");
     }
 });
 
@@ -49,7 +49,7 @@ $("#emotion-input").keypress(function (event) {
 $("body").on("click", "buttons.emotion", function () {
 
     var emotion = $(this).data('emotion');
-    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + emotion + "&api_key=TEjv4DhokKiGmbR0CqNmeMPDL5lC9h6u&limit=10";
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + emotion + "&api_key=TEjv4DhokKiGmbR0CqNmeMPDL5lC9h6u&limit=10";
     console.log(queryURL);
 
     $.ajax({
