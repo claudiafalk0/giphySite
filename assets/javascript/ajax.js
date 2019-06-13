@@ -39,8 +39,9 @@ $("#emotion-input").keypress(function (event) {
         event.preventDefault();
         var searchBar = $("#emotion-input").val().trim();
         topics.push(searchBar);
-
+        
         renderButtons();
+        searchBar = $("#emotion-input").val("");
     }
 });
 
